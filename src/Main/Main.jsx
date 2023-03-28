@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { context } from '../ContextFun'
+import {CiCircleMore} from "react-icons/ci"
 import "./main.scss"
 function Main() {
    /* for using useRef in input:
@@ -9,15 +10,28 @@ function Main() {
   4- ------- WE DON'T NEED ONCHANGE --------
    */ 
     let { task, setTask } = useContext(context)
+    console.log("🚀 ~ file: Main.jsx:12 ~ Main ~ task:", task)
     let [taskValue, setTaskValue] = useState({
-        title: "",
+        title: `Task ${task.length + 1}`,
         task: "",
         priority: "",
         privity: "",
         isCompleted:false
     })
+    console.log("🚀 ~ file: Main.jsx:19 ~ Main ~ taskValue:", taskValue)
     let handleChange = (e) => {
         setTaskValue({...taskValue,[e.target.name]:e.target.value})
+    }
+    let handleSubmit = (e) => {
+        e.preventDefault()
+        setTask([...task, taskValue])
+        setTaskValue({
+            title: `Task ${task.length + 1}`,
+            task: "",
+            priority: "",
+            privity: "",
+            isCompleted:false
+        })
     }
   return (
       <div className='main'>
@@ -40,13 +54,26 @@ function Main() {
                   <option value="not">Not yet</option>
               </select>
               {/* ============================= Form ===================== */}
-              <form action="">
-              <input className='titleInput' type="text" name='title' id="" defaultValue={`Task ${task.length + 1}`} />
-                  <input type="text" name='task' id="" placeholder='Enter your task...' />
+              <form onChange={handleChange} onSubmit={handleSubmit}>
+              <input className='titleInput' type="text" name='title' id="" value={taskValue.title} />
+                  <input type="text" name='task' id="" placeholder='Enter your task...' value={taskValue.task} />
                   <button>Add</button>
               </form>
               {/* ============================ Tasks =================== */}
+              <ul>
+                  
+                  {task.map((single, i) => <li>
+                      <span>Title: {single.title}</span>
+                      <span>Task: {single.task}</span>
+                      <div className="btns">
+                          <button>Done</button>
+                          <button>Delete</button>
+                          <button>Edit</button>
+                            <CiCircleMore/>
+                      </div>
 
+                  </li>  )}
+              </ul>
 
           </div>
       </div>
