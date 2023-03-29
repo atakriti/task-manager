@@ -1,6 +1,5 @@
 .main{
     .main_container{
-        border: 1px red solid;
         width: min(100% - 3%,1200px);
         margin: 0 auto;
         display: flex;
@@ -59,7 +58,60 @@
         // ========================
         ul{
             list-style: decimal;
-            
+            width: 100%;
+            margin-top: 2rem;
+            li{
+                display: flex;
+                flex-direction: column;
+                border: 1px orangered solid;
+                border-radius: 10px;
+                margin-bottom: 1rem;
+                padding: 0.5rem;
+                span{
+                    font-size: 1rem;
+                    &:nth-child(1){
+                        color: orangered;
+                    }
+                }
+                .btns{
+                    background-color: orangered;
+                    border-radius: 10px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    gap: 0.5rem;
+                    width: min(100% - 2%,700px);
+                    margin: 0 auto;
+                    margin-top: 1rem;
+                    padding: 0.5rem 1rem;
+                    button{
+                        flex: 0.3 0.3 150px;
+                        padding: 0.3rem 0;
+                        border: none;
+                        border-radius: 10px;
+                        outline: none;
+                        background-color: white;
+                    }
+                    svg{
+                        margin: 0 auto;
+                        font-size: 1.4rem;
+                        fill: white;
+                        color: white;
+                        cursor: pointer;
+                    }
+                }
+                .options{
+                    border: 2px red solid;
+                    margin-top: 2rem;
+                    h4{
+                        font-size: 1.5rem;
+                        margin-top: 1rem;
+                    }
+                    label{
+                        display: flex;
+                    }
+                }
+            }
         }
 
     }
