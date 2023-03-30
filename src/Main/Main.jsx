@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { context } from "../ContextFun";
 import { CiCircleMore } from "react-icons/ci";
 import "./main.scss";
@@ -34,7 +34,7 @@ function Main() {
             privity: "",
             isCompleted: false,
           });
-          // return here is important to Dont create another task
+          //! return here is important to Don't create another task
           return;
       }
     setTask([...task, taskValue]);
@@ -66,7 +66,7 @@ function Main() {
         // SetTaskValue here is when edit btn clicked , the field of adding task will be focused 
         setTaskValue({...taskValue,title:p.title,task:p.task})
     }
-// ==================================== Priority ===================
+// ==================================== Priority & Privity & Completed ===================
     let handleChangeFilter = (i, type, category) => {
         if (category === "priority") {
             let filter = task.map((item, index) => index === i ? { ...item, priority: type } : item)
@@ -79,17 +79,40 @@ function Main() {
             setTask(filter)
         }
     }
+  // ========================================== Filtering ======================
+  let [priorValue,setPriorValue] = useState("all")
+  let [privityValue,setPrivityValue] = useState("all")
+  let [isCompletedValue,setIsCompletedValue] = useState("all")
+  
+  let filteredTasks = task.filter(item => {
+    if (priorValue === "all") {
+      return true
+    }
+    return item.priority.includes(priorValue)
+ }).filter(item => {
+  if (privityValue === "all") {
+    return true
+  }
+  return item.privity.includes(privityValue)
+ }).filter(item => {
+   if (isCompletedValue === "all") {
+     return true; // show all tasks
+   }
+   return item.isCompleted === (isCompletedValue === "true");
+  
+ })
 
-    
-
-
-
-
-
-
-
-
-
+//! Important the option in select if the option is boolean so the option always returns it as STRING
+  // =====================================================
+  useEffect(() => {
+    setTaskValue({
+      title: `Task ${task.length + 1}`,
+      task: "",
+      priority: "",
+      privity: "",
+      isCompleted: false,
+    })
+  },[task])
 
   return (
     <div className="main">
@@ -98,26 +121,31 @@ function Main() {
           Welcome to my <span>Task Manager</span>
         </h1>
         {/* ==================== Filters ======================== */}
-        <select name="" id="">
-          <option selected disabled value="">
+        <select name="" id="" onChange={(e) => setPriorValue(e.target.value)}>
+          <option  selected disabled >
             Select priority
           </option>
+          <option value="all">All</option>
           <option value="work">Work</option>
           <option value="private">Private</option>
         </select>
-        <select name="" id="">
-          <option selected disabled value="">
+        {/* =============================== */}
+        <select name="" id="" onChange={(e) => setPrivityValue(e.target.value)}>
+          <option selected disabled>
             Select Privity
           </option>
+          <option value="all">All</option>
           <option value="high">High</option>
           <option value="low">Low</option>
         </select>
-        <select name="" id="">
-          <option selected disabled value="">
+        {/* ================================= */}
+        <select name="" id="" onChange={(e) => setIsCompletedValue(e.target.value)}>
+          <option selected disabled  >
             Select Completed
           </option>
-          <option value="completed">Completed</option>
-          <option value="not">Not yet</option>
+          <option value="all">All</option>
+          <option value={"true"}>Completed</option>
+          <option value={"false"}>Not yet</option>
         </select>
         {/* ============================= Form ===================== */}
         <form onChange={handleChange} onSubmit={handleSubmit}>
@@ -143,7 +171,7 @@ function Main() {
         </form>
         {/* ============================ Tasks =================== */}
         <ul>
-          {task.map((single, i) => (
+          {filteredTasks.map((single, i) => (
             <li>
               <span>
                 <b>Title:</b> {single.title}
@@ -196,5 +224,6 @@ function Main() {
     </div>
   );
 }
+
 
 export default Main;
