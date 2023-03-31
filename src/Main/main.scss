@@ -60,7 +60,7 @@
             list-style: decimal;
             width: 100%;
             margin-top: 2rem;
-            padding-bottom: 3rem;
+            padding-bottom: 5rem;
             li{
                 display: flex;
                 flex-direction: column;
@@ -178,19 +178,24 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-direction: column;
         h3{
             font-size: 0.8rem;
             display: flex;
             align-items: center;
-           a{
+            text-align: center;
+           
+        }
+        a{
             display: flex;
             justify-content: center;
             align-items: center;
+            text-decoration: none;
+            color: black;
             svg{
                 font-size: 1.5rem;
             }
 
            }
-        }
     }
 }

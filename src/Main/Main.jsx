@@ -234,7 +234,8 @@ useEffect(() => {
         </ul>
       </div>
       <footer>
-        <h3>Developed by Anwar | Android App <a href={android} download={android}> <FcAndroidOs/></a></h3>
+        <h3>Developed by Anwar Takriti</h3>
+         <a href={android} download={android}>Android App <FcAndroidOs/></a>
       </footer>
     </div>
   );
