@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { context } from "../ContextFun";
 import { CiCircleMore } from "react-icons/ci";
+import {FcAndroidOs} from "react-icons/fc"
+import FlipMove from 'react-flip-move';
 import "./main.scss";
 function Main() {
   /* for using useRef in input:
@@ -9,8 +11,9 @@ function Main() {
   3- in handleSubmit value.current.value, we see the value
   4- ------- WE DON'T NEED ONCHANGE --------
    */
-    let { task, setTask } = useContext(context);
-    let [isEditing,setIsEditing] = useState({index:null,isEditing:false})
+  let { task, setTask } = useContext(context);
+  let [modal,setModal] = useState({index:null,isModal:false})
+  let [isEditing, setIsEditing] = useState({ index: null, isEditing: false })
   let [taskValue, setTaskValue] = useState({
     title: `Task ${task.length + 1}`,
     task: "",
@@ -67,17 +70,9 @@ function Main() {
         setTaskValue({...taskValue,title:p.title,task:p.task})
     }
 // ==================================== Priority & Privity & Completed ===================
-    let handleChangeFilter = (i, type, category) => {
-        if (category === "priority") {
-            let filter = task.map((item, index) => index === i ? { ...item, priority: type } : item)
-            setTask(filter)
-        } else if (category === "privity") {
-            let filter = task.map((item, index) => index === i ? { ...item, privity: type } : item)
-            setTask(filter)
-        }else if (category === "completed") {
-            let filter = task.map((item, index) => index === i ? { ...item, isCompleted: type } : item)
-            setTask(filter)
-        }
+  let handleChangeFilter = (i, type, category) => {
+    let filter = task.map((item, index) => index === i ? { ...item, [category]: type } : item)
+    setTask(filter)
     }
   // ========================================== Filtering ======================
   let [priorValue,setPriorValue] = useState("all")
@@ -101,18 +96,24 @@ function Main() {
    return item.isCompleted === (isCompletedValue === "true");
   
  })
+// ===================================================== handleModal =======================
+  let handleModal = (i) => {
+    setModal({index:i,isModal:true})
+    
+  }
+  
 
+// =====================================================
+useEffect(() => {
+  setTaskValue({
+    title: `Task ${task.length + 1}`,
+    task: "",
+    priority: "",
+    privity: "",
+    isCompleted: false,
+  })
+},[task])
 //! Important the option in select if the option is boolean so the option always returns it as STRING
-  // =====================================================
-  useEffect(() => {
-    setTaskValue({
-      title: `Task ${task.length + 1}`,
-      task: "",
-      priority: "",
-      privity: "",
-      isCompleted: false,
-    })
-  },[task])
 
   return (
     <div className="main">
@@ -155,6 +156,7 @@ function Main() {
             name="title"
             id=""
             value={taskValue.title}
+            required
           />
           <input
             type="text"
@@ -162,6 +164,7 @@ function Main() {
             id=""
             placeholder="Enter your task..."
             value={taskValue.task}
+            required
                   />
                   {isEditing.isEditing ? (
           <button>Edit</button>
@@ -171,8 +174,9 @@ function Main() {
         </form>
         {/* ============================ Tasks =================== */}
         <ul>
+          <FlipMove>
           {filteredTasks.map((single, i) => (
-            <li>
+            <li style={{background:`${single.isCompleted ? "#d6ffd6" : "white"}`}}>
               <span>
                 <b>Title:</b> {single.title}
               </span>
@@ -183,44 +187,54 @@ function Main() {
                 <button onClick={() => handleDone(single,i)}>Done</button>
                 <button onClick={() => handleDelete(i)}>Delete</button>
                 <button onClick={() => handleEdit(single,i)}>Edit</button>
-                <CiCircleMore />
+                <CiCircleMore onClick={() => handleModal(i)} />
               </div>
-              <div className="options">
-                {/* ========================= Priority ================= */}
-                <h4>Priority:</h4>
-                <label htmlFor="priority">
-                  <h5>Work</h5>
-                  <input type="radio" name="priority" id="priority" value="work" checked={single.priority === "work"} onChange={() => handleChangeFilter(i,"work","priority")}/>
-                </label>
-                <label htmlFor="priority">
-                  <h5>Private</h5>
-                  <input type="radio" name="priority" id="priority" value="private" checked={single.priority === "private"} onChange={() => handleChangeFilter(i,"private","priority")} />
-                </label>
-                {/* ============================= Privity =============== */}
-                <h4>Privity:</h4>
-                <label htmlFor="privity">
-                  <h5>High</h5>
-                  <input type="radio" name="privity" id="privity" checked={single.privity === "high"} onChange={() => handleChangeFilter(i,"high","privity")} />
-                </label>
-                <label htmlFor="privity">
-                  <h5>Low</h5>
-                  <input type="radio" name="privity" id="privity" checked={single.privity === "low"} onChange={() => handleChangeFilter(i,"low","privity")} />
-                </label>
-                {/* ============================= Completed =============== */}
-                <h4>Completed:</h4>
-                <label htmlFor="completed">
-                  <h5>Completed</h5>
-                  <input type="radio" name="completed" id="completed" checked={single.isCompleted === true} onChange={() => handleChangeFilter(i,true,"completed")} />
-                </label>
-                <label htmlFor="completed">
-                  <h5>Not yet</h5>
-                  <input type="radio" name="completed" id="completed" checked={single.isCompleted === false} onChange={() => handleChangeFilter(i,false,"completed")}/>
-                </label>
-              </div>
+              {modal.index === i && modal.isModal && (
+                 <div className="options">
+                 <div className="option_container">
+                    {/* ========================= Priority ================= */}
+                <h1>Select the <span>category:</span></h1>
+                   <h4>Priority:</h4>
+                 <label htmlFor={`priority${i}`}>
+                   <h5>Work</h5>
+                   <input type="radio" name={`priority${i}`}id={`priority${i}`}value="work" checked={single.priority === "work"} onChange={() => handleChangeFilter(i,"work","priority")}/>
+                 </label>
+                 <label htmlFor={`priority${i + 1}`}>
+                   <h5>Private</h5>
+                   <input type="radio" name={`priority${i + 1}`}id={`priority${i + 1}`}value="private" checked={single.priority === "private"} onChange={() => handleChangeFilter(i,"private","priority")} />
+                 </label>
+                 {/* ============================= Privity =============== */}
+                 <h4>Privity:</h4>
+                 <label htmlFor={`privity${i}`}>
+                   <h5>High</h5>
+                   <input type="radio" name={`privity${i}`} id={`privity${i}`} checked={single.privity === "high"} onChange={() => handleChangeFilter(i,"high","privity")} />
+                 </label>
+                 <label htmlFor={`privity${i + 1}`}>
+                   <h5>Low</h5>
+                   <input type="radio" name={`privity${i + 1}`} id={`privity${i + 1}`} checked={single.privity === "low"} onChange={() => handleChangeFilter(i,"low","privity")} />
+                 </label>
+                 {/* ============================= Completed =============== */}
+                 <h4>Completed:</h4>
+                 <label htmlFor={`isCompleted${i}`}>
+                   <h5>Completed</h5>
+                   <input type="radio" name={`isCompleted${i}`} id={`isCompleted${i}`} checked={single.isCompleted === true} onChange={() => handleChangeFilter(i,true,"isCompleted")} />
+                 </label>
+                 <label htmlFor={`isCompleted${i + 1}`}>
+                   <h5>Not yet</h5>
+                   <input type="radio" name={`isCompleted${i + 1}`} id={`isCompleted${i + 1}`} checked={single.isCompleted === false} onChange={() => handleChangeFilter(i,false,"isCompleted")}/>
+                   </label>
+                   <button onClick={() => setModal({...modal,isModal:false})}>Finish</button>
+                </div>
+               </div>
+             )}
             </li>
           ))}
+            </FlipMove>
         </ul>
       </div>
+      <footer>
+        <h3>Developed by Anwar | Android App <FcAndroidOs/></h3>
+      </footer>
     </div>
   );
 }

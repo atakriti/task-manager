@@ -60,13 +60,15 @@
             list-style: decimal;
             width: 100%;
             margin-top: 2rem;
+            padding-bottom: 3rem;
             li{
                 display: flex;
                 flex-direction: column;
-                border: 1px orangered solid;
+                border: 1px rgb(255, 189, 165) solid;
                 border-radius: 10px;
                 margin-bottom: 1rem;
                 padding: 0.5rem;
+                // background-color: #d6ffd6 !important;
                 span{
                     font-size: 1rem;
                     &:nth-child(1){
@@ -101,18 +103,88 @@
                     }
                 }
                 .options{
-                    border: 2px red solid;
-                    margin-top: 2rem;
-                    h4{
-                        font-size: 1.5rem;
-                        margin-top: 1rem;
+                    // margin-top: 2rem;
+                    position: fixed;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: rgba(0, 0, 0, 0.808);
+                    .option_container{
+                        width: min(100% - 5%,400px);
+                        background-color: gray;
+                        padding: 1rem;
+                        border-radius: 10px;
+                        h1{
+                            font-size: 2rem;
+                            color: white;
+                            span{
+                                font-size: 2rem;
+                            }
+                        }
+                        h4{
+                            font-size: 1.5rem;
+                            margin-top: 1rem;
+                            color: orangered;
+                        }
+                        label{
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            border-bottom: 1px orangered solid;
+                            padding: 0.5rem;
+                            margin-bottom: 1rem;
+                            h5{
+                                font-size: 1.2rem;
+                                color: white;
+                            }
+                            input{
+                                width: 1rem;
+                                height: 1rem;
+                            }
+                        }
+                        button{
+                            border: none;
+                            outline: none;
+                            font-size: 1rem;
+                            margin: 0 auto;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 0.5rem 0;
+                            margin-top: 2rem;
+                            width: min(100% - 5%,200px);
+                            background-color: orangered;
+                            color: white;
+                            border-radius: 10px;
+                        }
                     }
-                    label{
-                        display: flex;
-                    }
+                   
                 }
             }
         }
 
+    }
+    footer{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background-color: rgb(197, 197, 197);
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        h3{
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            svg{
+                font-size: 1.5rem;
+            }
+        }
     }
 }
