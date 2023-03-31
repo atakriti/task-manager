@@ -134,7 +134,7 @@ useEffect(() => {
         {/* =============================== */}
         <select name="" id="" onChange={(e) => setPrivityValue(e.target.value)}>
           <option selected disabled>
-            Select Privity
+            Select Privacy
           </option>
           <option value="all">All</option>
           <option value="high">High</option>
