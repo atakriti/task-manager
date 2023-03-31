@@ -3,6 +3,7 @@ import { context } from "../ContextFun";
 import { CiCircleMore } from "react-icons/ci";
 import {FcAndroidOs} from "react-icons/fc"
 import FlipMove from 'react-flip-move';
+import android from "../app.apk"
 import "./main.scss";
 function Main() {
   /* for using useRef in input:
@@ -233,7 +234,7 @@ useEffect(() => {
         </ul>
       </div>
       <footer>
-        <h3>Developed by Anwar | Android App <FcAndroidOs/></h3>
+        <h3>Developed by Anwar | Android App <a href={android} download={android}> <FcAndroidOs/></a></h3>
       </footer>
     </div>
   );
